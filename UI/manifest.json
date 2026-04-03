@@ -3,6 +3,7 @@
   "name": "Smart DOM Scraper",
   "version": "1.0",
   "description": "Scrape webpage data and export as TXT",
+  "icons": "extension.png",
   "permissions": ["activeTab", "scripting"],
   "host_permissions": ["<all_urls>"],
   "action": {
