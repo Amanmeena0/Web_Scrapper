@@ -1,8 +1,0 @@
-fastapi 
-uvicorn
-numpy 
-scipy 
-pandas
-matplotlib 
-seaborn
-pydantic
