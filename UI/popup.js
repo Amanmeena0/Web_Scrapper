@@ -8,10 +8,8 @@ const downloadBtn = document.getElementById("downloadBtn");
 scrapeBtn.addEventListener("click", async () => {
 
     let selector = document.getElementById("selector").value.trim();
-
     if (!selector) {
-        alert("Please enter a CSS selector");
-        return;
+        selector = "body";
     }
 
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
