@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Scraper</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    body {
+      width: 320px;
+      padding: 15px;
+      background: #111827;
+      color: #e5e7eb;
+    }
+
+    h3 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #1f2937;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      outline: none;
+      transition: 0.2s;
+      font-size: 13px;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 9px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    #scrapeBtn {
+      background: #2563eb;
+      color: white;
+    }
+
+    #scrapeBtn:hover {
+      background: #1d4ed8;
+    }
+
+    #downloadBtn {
+      background: #10b981;
+      color: white;
+    }
+
+    #downloadBtn:hover {
+      background: #059669;
+    }
+
+    ul {
+      margin-top: 12px;
+      padding: 0;
+      list-style: none;
+      max-height: 180px;
+      overflow-y: auto;
+      border-radius: 8px;
+      background: white;
+      border: 1px solid #e5e7eb;
+    }
+
+    li {
+      padding: 8px 10px;
+      font-size: 12px;
+      border-bottom: 1px solid #f1f5f9;
+      border-left: 3px solid #2563eb;
+      line-height: 1.4;
+    }
+
+    li:last-child {
+      border-bottom: none;
+    }
+
+    li:hover {
+      background: #f9fafb;
+    }
+
+    /* Scrollbar styling */
+    ul::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ul::-webkit-scrollbar-thumb {
+      background: #cbd5f5;
+      border-radius: 10px;
+    }
+
+    ul::-webkit-scrollbar-thumb:hover {
+      background: #a5b4fc;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 10px;
+      margin-top: 10px;
+      color: #9ca3af;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <h3>Smart Scraper</h3>
+
+  <input id="selector" placeholder="e.g. h2, .price, .title" />
+
+  <button id="scrapeBtn">Scrape Data</button>
+  <button id="downloadBtn">Download TXT</button>
+
+  <ul id="results">
+    <li style="text-align:center; color:gray;">No data yet</li>
+  </ul>
+
+  <div class="footer">Efficient DOM Extraction Tool</div>
+
+  <script src="popup.js"></script>
+
+</body>
+</html>
