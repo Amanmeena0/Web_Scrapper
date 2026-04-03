@@ -4,6 +4,40 @@ let currentURL = "";
 const scrapeBtn = document.getElementById("scrapeBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 
+function sendScrapeMessage(tabId, selector) {
+    return new Promise((resolve, reject) => {
+        chrome.tabs.sendMessage(tabId, { action: "scrape", selector }, (response) => {
+            if (!chrome.runtime.lastError) {
+                resolve(response);
+                return;
+            }
+
+            const message = chrome.runtime.lastError.message || "Unknown error";
+
+            if (!message.includes("Receiving end does not exist")) {
+                reject(new Error(message));
+                return;
+            }
+
+            // Fallback: inject content script into the active tab, then retry.
+            chrome.scripting.executeScript({ target: { tabId }, files: ["content.js"] }, () => {
+                if (chrome.runtime.lastError) {
+                    reject(new Error(chrome.runtime.lastError.message || "Failed to inject content script"));
+                    return;
+                }
+
+                chrome.tabs.sendMessage(tabId, { action: "scrape", selector }, (retryResponse) => {
+                    if (chrome.runtime.lastError) {
+                        reject(new Error(chrome.runtime.lastError.message || "Failed to send scrape message"));
+                        return;
+                    }
+                    resolve(retryResponse);
+                });
+            });
+        });
+    });
+}
+
 // SCRAPE BUTTON
 scrapeBtn.addEventListener("click", async () => {
 
@@ -19,31 +53,22 @@ scrapeBtn.addEventListener("click", async () => {
     scrapeBtn.innerText = "Scraping...";
     scrapeBtn.disabled = true;
 
-    chrome.tabs.sendMessage(
-        tab.id,
-        { action: "scrape", selector: selector },
-        (response) => {
+    try {
+        const response = await sendScrapeMessage(tab.id, selector);
 
-            // Handle runtime errors
-            if (chrome.runtime.lastError) {
-                alert("Error: " + chrome.runtime.lastError.message);
-                resetButton();
-                return;
-            }
-
-            if (!response || !response.success) {
-                alert("Scraping failed");
-                resetButton();
-                return;
-            }
-
-            scrapedData = response.data;
-
-            renderResults(scrapedData);
-
+        if (!response || !response.success) {
+            alert("Scraping failed");
             resetButton();
+            return;
         }
-    );
+
+        scrapedData = response.data;
+        renderResults(scrapedData);
+    } catch (error) {
+        alert("Error: " + error.message);
+    } finally {
+        resetButton();
+    }
 });
 
 
